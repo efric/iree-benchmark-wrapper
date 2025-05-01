@@ -12,8 +12,11 @@ RUN sudo apt-get update -y \
     clang \
     lld \
     python3.11 \
-    python-is-python3 \
+    python3.11-distutils \
+    python3.11-venv \
     && sudo rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
     sudo apt-get install git-lfs
+
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11
