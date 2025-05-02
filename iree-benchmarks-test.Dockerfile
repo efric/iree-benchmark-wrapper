@@ -26,11 +26,12 @@ RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 &
     curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11 && \
     update-alternatives --install /usr/bin/pip pip /usr/local/bin/pip3.11 1
 
-RUN git clone https://github.com/iree-org/iree.git && \
-    cd iree && \
-    git submodule update --init && \
-    python -m pip install --upgrade pip && \
-    python -m venv .venv && \
-    . .venv/bin/activate && \
+RUN git clone --recurse-submodules https://github.com/iree-org/iree.git && \
+    git clone https://github.com/nod-ai/iree-model-benchmark.git
+
+WORKDIR /iree
+
+RUN python -m pip install --upgrade pip && \
     python -m pip install runtime/ && \
     python -m pip install -r runtime/bindings/python/iree/runtime/build_requirements.txt
+
