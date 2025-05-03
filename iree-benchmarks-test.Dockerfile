@@ -11,6 +11,7 @@ RUN sudo apt-get update -y \
     ninja-build \
     clang \
     lld \
+    ccache \
     build-essential \
     python3.11 \
     python3.11-distutils \
