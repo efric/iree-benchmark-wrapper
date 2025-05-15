@@ -17,10 +17,25 @@ RUN sudo apt-get update -y \
     python3.11-distutils \
     python3.11-venv \
     python3.11-dev \
+    libzstd-dev \
+    libzstd1 \
+    unzip \
+    pkg-config \
     && sudo rm -rf /var/lib/apt/lists/*
 
 RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash && \
     sudo apt-get install git-lfs
+
+RUN set -eux; \
+    case "$(uname -m)" in \
+      aarch64)   CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" ;; \
+      x86_64)    CLI_URL="https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" ;; \
+      *)         echo >&2 "Unsupported arch: $(uname -m)" ; exit 1 ;; \
+    esac; \
+    curl -L "$CLI_URL" -o awscliv2.zip; \
+    unzip awscliv2.zip; \
+    sudo ./aws/install; \
+    rm -rf awscliv2.zip aws
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.11 1 && \
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 && \
@@ -35,4 +50,3 @@ WORKDIR /iree
 RUN python -m pip install --upgrade pip && \
     python -m pip install runtime/ && \
     python -m pip install -r runtime/bindings/python/iree/runtime/build_requirements.txt
-
