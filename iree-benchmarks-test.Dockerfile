@@ -18,7 +18,6 @@ RUN sudo apt-get update -y \
     python3.11-venv \
     python3.11-dev \
     libzstd-dev \
-    libzstd1 \
     unzip \
     pkg-config \
     && sudo rm -rf /var/lib/apt/lists/*
